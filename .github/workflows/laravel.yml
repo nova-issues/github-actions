@@ -40,22 +40,19 @@ jobs:
         options: --entrypoint redis-server
 
     steps:
-      - uses: actions/checkout@v2
+      - name: "Checkout Repository"
+        uses: actions/checkout@v2
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-      - uses: actions/checkout@v2
-        name: Checkout private tools
-        with:
-          repository: laravel/nova
-          token: ${{ secrets.MY_GITHUB_TOKEN }}
-          path: nova
-          ref: "master"
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, intl, fileinfo
           coverage: none
+      - name: "Setup CI Authentication"
+        run: |
+          composer config http-basic.nova.laravel.com ${NOVA_USERNAME} ${NOVA_PASSWORD}
       - name: Install dependencies
         uses: "ramsey/composer-install@v1"
         with:
@@ -70,7 +67,7 @@ jobs:
       - name: Prepare storage
         run: php artisan storage:link
       - name: Upgrade Chrome Driver
-        run: vendor/bin/dusk-updater detect --auto-update
+        run: php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
       - name: Prepare Testbench
         run: vendor/bin/testbench-dusk package:discover
       - name: Start Chrome Driver
