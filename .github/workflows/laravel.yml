@@ -76,9 +76,16 @@ jobs:
         uses: jakejarvis/wait-action@master
         with:
           time: '5s'
-      - name: Execute tests (Dusk tests) via PHPUnit
-        run: vendor/bin/phpunit -c phpunit.dusk.xml --exclude-group=external-network --exclude-group=local-time
+      - name: Run Laravel Server
+        run: php artisan serve &
         env:
+          APP_URL: "http://127.0.0.1:8000"
+          DB_PORT: ${{ job.services.mysql.ports[3306] }}
+          DB_USERNAME: root
+      - name: Run Dusk Tests
+        run: php artisan dusk
+        env:
+          APP_URL: "http://127.0.0.1:8000"
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root
       - name: Upload Failed Screenshots
