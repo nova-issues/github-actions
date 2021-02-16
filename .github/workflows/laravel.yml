@@ -52,7 +52,7 @@ jobs:
           coverage: none
       - name: "Setup CI Authentication"
         run: |
-          composer config http-basic.nova.laravel.com ${{ NOVA_USERNAME }} ${{ NOVA_PASSWORD }}
+          composer config http-basic.nova.laravel.com ${{ secrets.NOVA_USERNAME }} ${{ secrets.NOVA_PASSWORD }}
       - name: Install dependencies
         uses: "ramsey/composer-install@v1"
         with:
