@@ -3,6 +3,8 @@ name: Laravel
 on:
   push:
   pull_request:
+  schedule:
+    - cron: '0 0 * * 3'
 
 jobs:
   laravel-tests:
@@ -16,13 +18,10 @@ jobs:
           - "7.3"
           - "7.4"
           - "8.0"
-        dependencies:
-          - "locked"
-          - "highest"
         experimental:
           - false
 
-    name: PHP${{ matrix.php }} on ${{ matrix.os }} (${{ matrix.dependencies }})
+    name: PHP${{ matrix.php }} on ${{ matrix.os }}
 
     services:
       mysql:
@@ -56,7 +55,7 @@ jobs:
       - name: Install dependencies
         uses: "ramsey/composer-install@v1"
         with:
-          dependency-versions: "${{ matrix.dependencies }}"
+          dependency-versions: "locked"
           composer-options: "--prefer-dist --no-cache"
       - name: Generate key
         run: php artisan key:generate
