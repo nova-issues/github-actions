@@ -20,28 +20,24 @@ class UserTableSeeder extends Seeder
             'name' => 'Taylor Otwell',
             'email' => 'taylor@laravel.com',
             'password' => $password,
-            'blocked_from' => [],
         ]);
 
         User::forceCreate([
             'name' => 'Mohamed Said',
             'email' => 'mohamed@laravel.com',
             'password' => $password,
-            'blocked_from' => [],
         ]);
 
         User::forceCreate([
             'name' => 'David Hemphill',
             'email' => 'david@laravel.com',
             'password' => $password,
-            'blocked_from' => [],
         ]);
 
         User::forceCreate([
             'name' => 'Laravel Nova',
             'email' => 'nova@laravel.com',
             'password' => $password,
-            'blocked_from' => [],
         ]);
     }
 }
